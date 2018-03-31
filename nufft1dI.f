@@ -53,9 +53,9 @@
 	integer*8  plan
 
 	M=0
-	do i = 1,nj
-	   do k = 1,r
-	      M(xsub(i),k) = M(xsub(i),k)+conjg(V(i,k))*c(i)
+	do k = 1,r
+	   do i = 1,nj
+	      M(xsub(i),k) = M(xsub(i),k)+V(i,k)*c(i)
 	   enddo
 	enddo
         !print *,'M(1,:)=',M(1,:)
@@ -74,8 +74,8 @@
            N(ns-mm+1:ns,:)=NN
         endif
 
-        N=U*N
-	S = sum(N,2)
+        
+	S = sum(U*N,2)
 
         
 	end

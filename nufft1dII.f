@@ -31,16 +31,16 @@
 	double complex in1, out1
 	dimension in1(ns), out1(nj)
 	integer*8 :: plan
-        character*8 date
-        character*10 time
-        character*5 zone 
-        integer*4 values1(8),values2(8)
-        real*16 arr(4),time1
-        num=1000
-        arr(1)=3600
-        arr(2)=60
-        arr(3)=1
-        arr(4)=0.001
+        !character*8 date
+        !character*10 time
+        !character*5 zone 
+        !integer*4 values1(8),values2(8)
+        !real*16 arr(4),time1
+        !num=1000
+        !arr(1)=3600
+        !arr(2)=60
+        !arr(3)=1
+        !arr(4)=0.001
 
 	do k = 1,r
 	   M(:,k) = conjg(V(:,k))*c
@@ -59,9 +59,9 @@
 	   N(:,i) = out1
 	enddo
 
-        do i = 1,nj
-           CC(i,:)=N(xsub(i),:)
-        enddo
-	S = sum(U*CC,2)
+        !do i = 1,nj
+        !   CC(i,:)=N(xsub(i),:)
+        !enddo
+	S = sum(U*N(xsub,:),2)
 
 	end subroutine

@@ -4,11 +4,11 @@
         integer nj,ns,r
         real*16 begin1,end1
         integer*8  time_begin,time_end,countrage,countmax
-        real*16 U1(7,128),V1(7,128),U2(7,128),V2(7,128)
+        real*16 U1(12,128),V1(12,128),U2(12,128),V2(12,128)
         real*16 re1(128),re2(128),x(128),xsubb(128),pi,time1,time2
         real*16 arr(4)
         parameter (pi=3.141592653589793238462643383279502884197d0)
-        complex*16 U(128,7),V(128,7),c(128),S(128),re(128),M(128,7)
+        complex*16 U(128,12),V(128,12),c(128),S(128),re(128),M(128,12)
         complex*16 fk(-64:63)
         real*8 x1(128),eps,error
         double complex in1, out1
@@ -29,9 +29,9 @@
         arr(4)=0.001
         nj=128
         ns=128
-        r=7
+        r=12
         iflag=-1
-        eps=1E-6
+        eps=1E-12
         num=10000
         open(unit = 10,file = 'Ur1.txt')
         read(10,*) U1
@@ -48,6 +48,7 @@
         re=dcmplx(re1,re2)        
         U=dcmplx(transpose(U1),transpose(U2))
         V=dcmplx(transpose(V1),transpose(V2))
+        V=conjg(V)
         !print *,V(2,:)
         !print *,U(1,:)
         do i = 1,128
