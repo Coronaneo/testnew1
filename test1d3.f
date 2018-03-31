@@ -10,7 +10,7 @@
         real*8 pi
         parameter (pi=3.141592653589793238462643383279502884197d0)
         complex*16 U(128,57),V(128,57),c(128),S(128),re(128)
-        complex*16 fk(128),Idx(128,128)
+        complex*16 fk(128),Idx(128,128),Idk(128,128)
         real*8 x1(128),eps,error,k(128)
         double complex in1, out1
         dimension in1(128), out1(128)
@@ -52,6 +52,7 @@
         print *,'eps            =',eps
       
         U=dcmplx(transpose(U1),transpose(U2))
+        U=conjg(U)
         V=dcmplx(transpose(V1),transpose(V2))
         re=dcmplx(re1,re2)
         !print *,'V(1,1:5)=',V(1,1:5)
@@ -76,8 +77,11 @@
         !print *,'ok'
         Idx=0
 	do i = 1,nj
-	   Idx(i,xsub(i))=1
+	   Idx(xsub(i),i)=1
 	enddo
+        do i = 1,nk
+           Idk(i,ksub(i))=1
+        enddo
 
         call date_and_time(date,time,zone,values1)
         do i=1,num
