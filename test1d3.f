@@ -9,7 +9,7 @@
         real*16 arr(4)
         real*8 pi
         parameter (pi=3.141592653589793238462643383279502884197d0)
-        complex*16 U(128,57),V(128,57),c(128),S(128),re(128)
+        complex*16 c(128),S(128),re(128),U(57,128),V(57,128)
         complex*16 fk(128),Idx(128,128),Idk(128,128)
         real*8 x1(128),eps,error,k(128)
         double complex in1, out1
@@ -51,9 +51,9 @@
         print *,'start 1D type 3 testing:','nj  =',nj,'ns  =',ns
         print *,'eps            =',eps
       
-        U=dcmplx(transpose(U1),transpose(U2))
+        U=dcmplx(U1,U2)
         U=conjg(U)
-        V=dcmplx(transpose(V1),transpose(V2))
+        V=dcmplx(V1,V2)
         re=dcmplx(re1,re2)
         !print *,'V(1,1:5)=',V(1,1:5)
         !print *,'U(1,1:5)=',U(1,1:5)

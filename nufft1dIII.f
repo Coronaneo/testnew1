@@ -30,7 +30,7 @@
 	integer  r,i,j,k,nj,ns,iflag,num,nk
 	integer mm
 	integer xsub(nj),ksub(nk)
-	complex*16 M(nj,r),N(nj,r),S(nk),c(nj),U(nk,r),V(nj,r),VV(nj,r)
+	complex*16 M(r,nj),N(r,nj),S(nk),c(nj),U(r,nk),V(r,nj),VV(r,nj)
 	complex*16 NN(nk,r),Idx(nj,nj),Idk(nk,nk),w1,w2
 	double complex in1, out1
 	real*16  time_begin,time_end,countrage,countmax
@@ -39,10 +39,10 @@
         w1=dcmplx(1,0)
         w2=dcmplx(0,0)
 	M=0
-        !VV=V*spread(c,2,r)
-	do k = 1,r
-	   do i = 1,nj
-	      M(xsub(i),k) = M(xsub(i),k)+V(i,k)*c(i)
+        !VV=V*spread(c,1,r)
+	do i = 1,nj
+	   do k = 1,r
+	      M(k,xsub(i)) = M(k,xsub(i))+V(K,i)*c(i)
 	   enddo
 	enddo
         
@@ -56,9 +56,9 @@ c        enddo
 
 c        print *,'M(1,1:5)=',M(66,1:5)
 	do i = 1,r
-	   in1 = M(:,i)
+	   in1 = M(i,:)
 	   call dfftw_execute_dft(plan, in1, out1)
-	   N(:,i) = out1
+	   N(i,:) = out1
 	enddo
         !print *,'N(1,1:5)=',N(66,1:5)
 	
@@ -70,8 +70,8 @@ c	enddo
         !call zgemm('n','n',nj,r,nj,w1,Idk,nj,N,nj,w2,NN,nj)
         !S = sum(U*NN,2)
         do i = 1,nk
-           S(i)=dot_product(U(i,:),N(ksub(i),:))
+           S(i)=dot_product(U(:,i),N(:,ksub(i)))
         enddo
-	!S = sum(U*N(ksub,:),2)
+	!S = sum(U*N(:,ksub),1)
 
 	end subroutine
