@@ -45,7 +45,7 @@
 	integer  r,i,j,k,nj,ns,iflag,num,kflag
         integer mm
 	integer xsub(nj)
-	complex*16 M(nj,r),N(ns,r),S(ns),c(nj),U(ns,r),V(nj,r)
+	complex*16 M(r,nj),N(r,ns),S(ns),c(nj),U(r,ns),V(r,nj)
         complex*16,allocatable :: NN(:,:)
 	double complex in1, out1
         real*16  time_begin,time_end,countrage,countmax
@@ -53,29 +53,29 @@
 	integer*8  plan
 
 	M=0
-	do k = 1,r
-	   do i = 1,nj
-	      M(xsub(i),k) = M(xsub(i),k)+V(i,k)*c(i)
+	do i = 1,nj
+	   do k = 1,r
+	      M(k,xsub(i)) = M(k,xsub(i))+V(k,i)*c(i)
 	   enddo
 	enddo
         !print *,'M(1,:)=',M(1,:)
 	do i = 1,r
-	   in1 = M(:,i)
+	   in1 = M(i,:)
            call dfftw_execute_dft(plan, in1, out1)
-	   N(:,i) = out1
+	   N(i,:) = out1
 	enddo
 
        
         if (kflag .lt. 0) then
            mm=floor(ns/2.0+0.6)
-           allocate(NN(mm,r))
-           NN=N(1:mm,:)
-           N(1:ns-mm,:)=N(mm+1:ns,:)
-           N(ns-mm+1:ns,:)=NN
+           allocate(NN(r,mm))
+           NN=N(:,1:mm)
+           N(:,1:ns-mm)=N(:,mm+1:ns)
+           N(:,ns-mm+1:ns)=NN
         endif
 
         
-	S = sum(U*N,2)
+	S = sum(U*N,1)
 
         
 	end

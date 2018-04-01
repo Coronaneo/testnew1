@@ -42,7 +42,7 @@
         !VV=V*spread(c,1,r)
 	do i = 1,nj
 	   do k = 1,r
-	      M(k,xsub(i)) = M(k,xsub(i))+V(K,i)*c(i)
+	      M(k,xsub(i)) = M(k,xsub(i))+V(k,i)*c(i)
 	   enddo
 	enddo
         

@@ -8,7 +8,7 @@
         real*16 re1(128),re2(128),x(128),xsubb(128),pi,time1,time2
         real*16 arr(4)
         parameter (pi=3.141592653589793238462643383279502884197d0)
-        complex*16 U(128,12),V(128,12),c(128),S(128),re(128),M(128,12)
+        complex*16 U(12,128),V(12,128),c(128),S(128),re(128),M(128,12)
         complex*16 fk(-64:63)
         real*8 x1(128),eps,error
         double complex in1, out1
@@ -46,8 +46,8 @@
         print *,'start 1D type 1 testing:','nj  =',nj,'ns  =',ns
         print *,'eps             =',eps
         re=dcmplx(re1,re2)        
-        U=dcmplx(transpose(U1),transpose(U2))
-        V=dcmplx(transpose(V1),transpose(V2))
+        U=dcmplx(U1,U2)
+        V=dcmplx(V1,V2)
         V=conjg(V)
         !print *,V(2,:)
         !print *,U(1,:)

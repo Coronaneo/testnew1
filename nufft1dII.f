@@ -25,7 +25,7 @@
 	subroutine nufft1dIIapp(nj,plan,c,U,V,xsub,ns,iflag,r,S)
 	integer  r,i,j,k,nj,ns,iflag,num
 	integer mm,xsub(nj)
-	complex*16 M(ns,r),N(ns,r),S(nj),c(ns),U(nj,r),V(ns,r)
+	complex*16 M(r,ns),N(r,ns),S(nj),c(ns),U(r,nj),V(r,ns)
 	complex*16 NN(nj,r),CC(nj,r),w1,w2,Idx(nj,ns)
         complex*16,allocatable :: MMM(:,:)
 	double complex in1, out1
@@ -42,26 +42,26 @@
         !arr(3)=1
         !arr(4)=0.001
 
-	do k = 1,r
-	   M(:,k) = conjg(V(:,k))*c
+	do k = 1,ns
+	   M(:,k) = V(:,k)*c(k)
 	enddo
 
         
         mm=floor(ns/2.0+0.6)
-        allocate(MMM(mm,r))
-        MMM=M(1:mm,:)
-        M(1:ns-mm,:)=M(mm+1:ns,:)
-        M(ns-mm+1:ns,:)=MMM
+        allocate(MMM(r,mm))
+        MMM=M(:,1:mm)
+        M(:,1:ns-mm)=M(:,mm+1:ns)
+        M(:,ns-mm+1:ns)=MMM
 
 	do i = 1,r
-	   in1 = M(:,i)
+	   in1 = M(i,:)
 	   call dfftw_execute_dft(plan, in1, out1)
-	   N(:,i) = out1
+	   N(i,:) = out1
 	enddo
 
         !do i = 1,nj
         !   CC(i,:)=N(xsub(i),:)
         !enddo
-	S = sum(U*N(xsub,:),2)
+	S = sum(U*N(:,xsub),1)
 
 	end subroutine
